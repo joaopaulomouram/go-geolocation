@@ -8,21 +8,19 @@ import (
 	"os"
 )
 
-type Country struct {
-	Name string `json:"name"`
-	Iso3 string `json:"iso3"`
-	Currency_symbol string `json:"currency_symbol"`
-	States []struct_state.State `json:"states,omitempty"`
-}
+var countryList []struct_country.Country
 
 func GetCountriesList() []struct_country.Country{
+
+	if len(countryList) > 0 {
+		return countryList
+	}
 
 	file, err := os.ReadFile("internal/data.json")
 	if err != nil {
 		log.Fatal("Failed to read file: ", err)
 	}
 
-	var countryList []struct_country.Country
 	err = json.Unmarshal(file, &countryList)
 	if err != nil {
 		log.Fatal("Failed to unmarshal JSON data: ", err)
